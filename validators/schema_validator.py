@@ -1,11 +1,16 @@
+from pathlib import Path
 import json
 from jsonschema import validate
 
-def validate_schema(instance: dict, schema_path: str):
-    """
-    Generic JSON schema validator
-    """
-    with open(schema_path) as schema_file:
-        schema = json.load(schema_file)
+def validate_schema(instance, schema_name: str):
+    schema_path = (
+        Path(__file__)
+        .parent.parent        # project root
+        / "schemas"
+        / schema_name
+    )
+
+    with open(schema_path, encoding="utf-8") as f:
+        schema = json.load(f)
 
     validate(instance=instance, schema=schema)
